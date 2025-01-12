@@ -1,1 +1,1 @@
-web: gunicorn moslimfo.islam:app 
+web: gunicorn wsgi:app 
