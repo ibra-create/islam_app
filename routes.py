@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, json, redirect, url_for, send_from_directory, jsonify
+from . import app, render_template, request, json, redirect, url_for, send_from_directory, jsonify
 import os
 import urllib.parse
 import random
