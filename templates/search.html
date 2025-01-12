@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>البحث عن الأخطاء</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <header>
+        <h1>البحث في الموقع</h1>
+    </header>
+
+    <main class="container">
+        <div class="search-container">
+            <form method="POST" class="search-form">
+                <div class="search-box">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" name="query" class="search-input" placeholder="ابحث عن خطأ أو موضوع..." required>
+                </div>
+                <button type="submit" class="btn-search">بحث</button>
+            </form>
+            <a href="{{ url_for('home') }}" class="btn-back">
+                <i class="fas fa-arrow-right"></i>
+                العودة للرئيسية
+            </a>
+        </div>
+    </main>
+</body>
+</html>

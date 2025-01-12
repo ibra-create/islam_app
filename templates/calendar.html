@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="page-container">
+    <div class="widget hijri-calendar-widget">
+        <div class="widget-header">
+            <i class="fas fa-calendar-alt"></i>
+            <h2>التقويم الهجري</h2>
+        </div>
+        <div class="date-display">
+            {% if error %}
+                <div class="error-message">{{ error }}</div>
+            {% else %}
+                <div class="hijri-date">
+                    <div class="date-number">{{ calendar.hijri_day }}</div>
+                    <div class="month-name">{{ calendar.hijri_month }}</div>
+                    <div class="year-number">{{ calendar.hijri_year }} هـ</div>
+                </div>
+                <div class="gregorian-date">
+                    {{ calendar.gregorian }}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %} 

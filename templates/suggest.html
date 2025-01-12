@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اقتراح محتوى جديد</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <header>
+        <h1>اقتراح محتوى جديد</h1>
+    </header>
+
+    <main class="container">
+        <div class="suggestion-container">
+            <form method="POST" class="suggestion-form">
+                <div class="form-group">
+                    <label for="category">
+                        <i class="fas fa-folder"></i>
+                        القسم
+                    </label>
+                    <select name="category" id="category" required class="modern-select">
+                        <option value="">اختر القسم</option>
+                        <option value="الصلاة">الصلاة</option>
+                        <option value="الوضوء">الوضوء</option>
+                        <option value="مفاهيم_إسلامية">مفاهيم إسلامية</option>
+                        <option value="اجتماعية">أخطاء اجتماعية</option>
+                        <option value="التواصل">التواصل</option>
+                        <option value="قراءة_القرآن">قراءة القرآن</option>
+                        <option value="الصيام">الصيام</option>
+                        <option value="الحج_والعمرة">الحج والعمرة</option>
+                        <option value="العلاقات_الأسرية">العلاقات الأسرية</option>
+                        <option value="المعاملات_المالية">المعاملات المالية</option>
+                        <option value="الأخلاق_والسلوك">الأخلاق والسلوك</option>
+                        <option value="الدعاء">الدعاء</option>
+                        <option value="العمل_والوظيفة">العمل والوظيفة</option>
+                        <option value="استخدام_التكنولوجيا">استخدام التكنولوجيا</option>
+                        <option value="الصحة_والنظافة">الصحة والنظافة</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="mistake">
+                        <i class="fas fa-exclamation-circle"></i>
+                        الخطأ
+                    </label>
+                    <input type="text" name="mistake" id="mistake" required class="modern-input" placeholder="اكتب الخطأ هنا">
+                </div>
+
+                <div class="form-group">
+                    <label for="solution">
+                        <i class="fas fa-check-circle"></i>
+                        الحل
+                    </label>
+                    <textarea name="solution" id="solution" required class="modern-textarea" placeholder="اكتب الحل المقترح هنا"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="source">
+                        <i class="fas fa-book"></i>
+                        المصدر
+                    </label>
+                    <input type="text" name="source" id="source" required class="modern-input" placeholder="المصدر (آية، حديث، أو مرجع موثوق)">
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-submit">
+                        <i class="fas fa-paper-plane"></i>
+                        إرسال الاقتراح
+                    </button>
+                    <a href="{{ url_for('home') }}" class="btn-back">
+                        <i class="fas fa-arrow-right"></i>
+                        العودة للرئيسية
+                    </a>
+                </div>
+            </form>
+        </div>
+    </main>
+</body>
+</html>

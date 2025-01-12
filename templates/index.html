@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الصفحة الرئيسية</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <div class="floating-menu">
+        <button class="menu-toggle">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="menu-items">
+            <a href="{{ url_for('prayer_times') }}" class="menu-item">
+                <i class="fas fa-clock"></i>
+                <span>مواقيت الصلاة</span>
+            </a>
+            <a href="{{ url_for('calendar') }}" class="menu-item">
+                <i class="fas fa-calendar-alt"></i>
+                <span>التقويم الهجري</span>
+            </a>
+            <a href="#" class="menu-item" onclick="startQuiz(event)">
+                <i class="fas fa-question-circle"></i>
+                <span>اختبر معلوماتك</span>
+            </a>
+            <a href="{{ url_for('search') }}" class="menu-item">
+                <i class="fas fa-search"></i>
+                <span>البحث عن الأخطاء</span>
+            </a>
+            <a href="{{ url_for('suggest') }}" class="menu-item">
+                <i class="fas fa-lightbulb"></i>
+                <span>اقتراح خطأ جديد</span>
+            </a>
+        </div>
+    </div>
+
+    <header>
+        <div class="header-corner header-corner-tl"></div>
+        <div class="header-corner header-corner-tr"></div>
+        <div class="header-corner header-corner-bl"></div>
+        <div class="header-corner header-corner-br"></div>
+        <h1>مرحبًا بكم في منصة المسلم</h1>
+    </header>
+
+    <div class="daily-hadith-widget">
+        <div class="widget-header">
+            <i class="fas fa-quote-right"></i>
+            <h2>حديث اليوم</h2>
+        </div>
+        <div class="hadith-content">
+            <div class="hadith-text">جاري التحميل...</div>
+            <div class="hadith-info">
+                <div class="source"></div>
+                <div class="category"></div>
+            </div>
+            <div class="hadith-share">
+                <button onclick="shareHadith('whatsapp')" class="share-btn">
+                    <i class="fab fa-whatsapp"></i>
+                </button>
+                <button onclick="shareHadith('facebook')" class="share-btn">
+                    <i class="fab fa-facebook"></i>
+                </button>
+                <button onclick="shareHadith('twitter')" class="share-btn">
+                    <i class="fab fa-twitter"></i>
+                </button>
+                <button onclick="copyHadith()" class="share-btn">
+                    <i class="fas fa-copy"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="topic-selection">
+        <h2>اختر الموضوع</h2>
+    </div>
+    <div class="categories-grid">
+        <ul class="categories-list">
+            <!-- Salah Category -->
+            <li>
+                <a href="{{ url_for('salah') }}" class="category-link">
+                    <div class="category-content">
+                        <div class="icon-wrapper">
+                            <i class="fas fa-pray"></i>
+                        </div>
+                        <h3>أخطاء الصلاة</h3>
+                        <p>تصحيح الأخطاء الشائعة في الصلاة</p>
+                    </div>
+                </a>
+            </li>
+
+            <!-- Wudu Category -->
+            <li>
+                <a href="{{ url_for('wudu') }}" class="category-link">
+                    <div class="category-content">
+                        <div class="icon-wrapper">
+                            <i class="fas fa-water"></i>
+                        </div>
+                        <h3>أخطاء الوضوء</h3>
+                        <p>تصحيح الأخطاء الشائعة في الوضوء</p>
+                    </div>
+                </a>
+            </li>
+
+            <!-- Islamic Concepts -->
+            <li>
+                <a href="{{ url_for('islamic') }}" class="category-link">
+                    <div class="category-content">
+                        <div class="icon-wrapper">
+                            <i class="fas fa-star-and-crescent"></i>
+                        </div>
+                        <h3>مفاهيم إسلامية</h3>
+                        <p>توضيح المفاهيم الإسلامية الأساسية</p>
+                    </div>
+                </a>
+            </li>
+
+            <!-- Social Mistakes -->
+            <li>
+                <a href="{{ url_for('social') }}" class="category-link">
+                    <div class="category-content">
+                        <div class="icon-wrapper">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h3>أخطاء اجتماعية</h3>
+                        <p>تصحيح الأخطاء في التعاملات الاجتماعية</p>
+                    </div>
+                </a>
+            </li>
+
+            <!-- Communication -->
+            <li>
+                <a href="{{ url_for('communication') }}" class="category-link">
+                    <div class="category-content">
+                        <div class="icon-wrapper">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <h3>أخطاء في التواصل</h3>
+                        <p>تحسين مهارات التواصل الإسلامي</p>
+                    </div>
+                </a>
+            </li>
+
+            <!-- Quran -->
+            <li>
+                <a href="{{ url_for('quran') }}" class="category-link">
+                    <div class="category-content">
+                        <div class="icon-wrapper">
+                            <i class="fas fa-book-open"></i>
+                        </div>
+                        <h3>أخطاء في قراءة القرآن</h3>
+                        <p>تصحيح أخطاء تلاوة القرآن الكريم</p>
+                    </div>
+                </a>
+            </li>
+
+            <!-- Fasting -->
+            <li>
+                <a href="{{ url_for('fasting') }}" class="category-link">
+                    <div class="category-content">
+                        <div class="icon-wrapper">
+                            <i class="fas fa-moon"></i>
+                        </div>
+                        <h3>أخطاء في الصيام</h3>
+                        <p>تصحيح الأخطاء الشائعة في الصيام</p>
+                    </div>
+                </a>
+            </li>
+
+            <!-- Hajj -->
+            <li>
+                <a href="{{ url_for('hajj') }}" class="category-link">
+                    <div class="category-content">
+                        <div class="icon-wrapper">
+                            <i class="fas fa-kaaba"></i>
+                        </div>
+                        <h3>أخطاء في الحج والعمرة</h3>
+                        <p>تصحيح أخطاء مناسك الحج والعمرة</p>
+                    </div>
+                </a>
+            </li>
+
+            <!-- Family -->
+            <li>
+                <a href="{{ url_for('family') }}" class="category-link">
+                    <div class="category-content">
+                        <div class="icon-wrapper">
+                            <i class="fas fa-home"></i>
+                        </div>
+                        <h3>أخطاء في العلاقات الأسرية</h3>
+                        <p>تحسين العلاقات الأسرية</p>
+                    </div>
+                </a>
+            </li>
+
+            <!-- Financial -->
+            <li>
+                <a href="{{ url_for('financial') }}" class="category-link">
+                    <div class="category-content">
+                        <div class="icon-wrapper">
+                            <i class="fas fa-hand-holding-usd"></i>
+                        </div>
+                        <h3>أخطاء في المعاملات المالية</h3>
+                        <p>تصحيح المعاملات المالية الإسلامية</p>
+                    </div>
+                </a>
+            </li>
+
+            <!-- Ethics -->
+            <li>
+                <a href="{{ url_for('ethics') }}" class="category-link">
+                    <div class="category-content">
+                        <div class="icon-wrapper">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <h3>أخطاء في الأخلاق والسلوك</h3>
+                        <p>تحسين الأخلاق والسلوك الإسلامي</p>
+                    </div>
+                </a>
+            </li>
+
+            <!-- Dua -->
+            <li>
+                <a href="{{ url_for('dua') }}" class="category-link">
+                    <div class="category-content">
+                        <div class="icon-wrapper">
+                            <i class="fas fa-hands"></i>
+                        </div>
+                        <h3>أخطاء في الدعاء</h3>
+                        <p>تصحيح أخطاء الدعاء والذكر</p>
+                    </div>
+                </a>
+            </li>
+
+            <!-- Work -->
+            <li>
+                <a href="{{ url_for('work') }}" class="category-link">
+                    <div class="category-content">
+                        <div class="icon-wrapper">
+                            <i class="fas fa-briefcase"></i>
+                        </div>
+                        <h3>أخطاء في العمل والوظيفة</h3>
+                        <p>تحسين أخلاقيات العمل الإسلامية</p>
+                    </div>
+                </a>
+            </li>
+
+            <!-- Technology -->
+            <li>
+                <a href="{{ url_for('technology') }}" class="category-link">
+                    <div class="category-content">
+                        <div class="icon-wrapper">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <h3>أخطاء في استخدام التكنولوجيا</h3>
+                        <p>الاستخدام الأمثل للتكنولوجيا</p>
+                    </div>
+                </a>
+            </li>
+
+            <!-- Health -->
+            <li>
+                <a href="{{ url_for('health') }}" class="category-link">
+                    <div class="category-content">
+                        <div class="icon-wrapper">
+                            <i class="fas fa-heartbeat"></i>
+                        </div>
+                        <h3>أخطاء في الصحة والنظافة</h3>
+                        <p>العناية بالصحة والنظافة في الإسلام</p>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </div>
+    </main>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
+    <script src="{{ url_for('static', filename='prayer-times.js') }}"></script>
+    <script src="{{ url_for('static', filename='hadith.js') }}"></script>
+    <script src="{{ url_for('static', filename='menu.js') }}"></script>
+    <div class="quiz-modal" id="quizModal">
+        <div class="quiz-content">
+            <div class="quiz-header">
+                <h2>اختبر معلوماتك الإسلامية</h2>
+                <div class="quiz-score">النقاط: <span id="score">0</span></div>
+            </div>
+            
+            <div class="quiz-question">
+                <p id="questionText"></p>
+                <div class="options-container" id="optionsContainer"></div>
+            </div>
+            
+            <div class="quiz-feedback" id="feedback"></div>
+            
+            <div class="quiz-controls">
+                <button onclick="nextQuestion()" id="nextBtn" style="display: none;">السؤال التالي</button>
+                <button onclick="endQuiz()" class="exit-btn">إنهاء الاختبار</button>
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='quiz.js') }}"></script>
+
+    <!-- Add modals for prayer times and calendar -->
+    <div class="modal" id="prayerTimesModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>مواقيت الصلاة</h2>
+                <button class="close-btn" onclick="closeModal('prayerTimesModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="prayer-times-container">
+                <!-- Prayer times content will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="calendarModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>التقويم الهجري</h2>
+                <button class="close-btn" onclick="closeModal('calendarModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="date-display">
+                <!-- Calendar content will be inserted here -->
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='modals.js') }}"></script>
+</body>
+</html>

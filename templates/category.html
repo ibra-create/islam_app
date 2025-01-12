@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="header-corner header-corner-tl"></div>
+        <div class="header-corner header-corner-tr"></div>
+        <div class="header-corner header-corner-bl"></div>
+        <div class="header-corner header-corner-br"></div>
+        <h1>{{ title }}</h1>
+    </header>
+
+    <main class="container">
+        <div class="category-container">
+            <!-- Share buttons -->
+            <div class="share-buttons">
+                <button onclick="shareContent('whatsapp')" class="share-btn">
+                    <i class="fab fa-whatsapp"></i>
+                </button>
+                <button onclick="shareContent('facebook')" class="share-btn">
+                    <i class="fab fa-facebook"></i>
+                </button>
+                <button onclick="shareContent('twitter')" class="share-btn">
+                    <i class="fab fa-twitter"></i>
+                </button>
+                <button onclick="window.print()" class="share-btn">
+                    <i class="fas fa-print"></i>
+                </button>
+            </div>
+
+            <ul class="content-list">
+                {% for key in data.keys() %}
+                <li class="content-item">
+                    <a href="{{ url_for('solution', category=title, fault=key) }}" class="category-link">
+                        <div class="category-content">
+                            <h3>{{ key }}</h3>
+                        </div>
+                    </a>
+                    <button class="bookmark-btn" onclick="toggleBookmark(this)" data-id="{{ key }}">
+                        <i class="fas fa-bookmark"></i>
+                    </button>
+                </li>
+                {% endfor %}
+            </ul>
+
+            <div class="navigation-buttons">
+                <a href="{{ url_for('home') }}" class="btn-back">
+                    <i class="fas fa-arrow-right"></i>
+                    العودة للرئيسية
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Bookmark functionality
+        function toggleBookmark(button) {
+            const id = button.getAttribute('data-id');
+            let bookmarks = JSON.parse(localStorage.getItem('bookmarks') || '[]');
+            
+            if (bookmarks.includes(id)) {
+                bookmarks = bookmarks.filter(b => b !== id);
+                button.classList.remove('bookmarked');
+            } else {
+                bookmarks.push(id);
+                button.classList.add('bookmarked');
+            }
+            
+            localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
+        }
+
+        // Share functionality
+        function shareContent(platform) {
+            const url = window.location.href;
+            const title = document.title;
+            
+            const shareUrls = {
+                whatsapp: `https://wa.me/?text=${encodeURIComponent(title + ' ' + url)}`,
+                facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
+                twitter: `https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(url)}`
+            };
+            
+            window.open(shareUrls[platform], '_blank');
+        }
+
+        // Initialize bookmarks
+        document.addEventListener('DOMContentLoaded', () => {
+            const bookmarks = JSON.parse(localStorage.getItem('bookmarks') || '[]');
+            const buttons = document.querySelectorAll('.bookmark-btn');
+            
+            buttons.forEach(button => {
+                const id = button.getAttribute('data-id');
+                if (bookmarks.includes(id)) {
+                    button.classList.add('bookmarked');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

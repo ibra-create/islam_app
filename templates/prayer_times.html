@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="page-container">
+    <!-- Back button -->
+    <a href="/" class="back-btn">
+        <i class="fas fa-arrow-right"></i>
+        الرئيسية
+    </a>
+
+    <div class="widget">
+        <div class="widget-header">
+            <i class="fas fa-clock"></i>
+            <h2>مواقيت الصلاة</h2>
+        </div>
+
+        <div class="location-controls">
+            <div class="city-select">
+                <select id="citySelect" onchange="handleCityChange()">
+                    <option value="" disabled selected>اختر المدينة</option>
+                    <optgroup label="المدن الكبرى">
+                        <option value="casablanca">الدار البيضاء</option>
+                        <option value="rabat">الرباط</option>
+                        <option value="fes">فاس</option>
+                        <option value="marrakech">مراكش</option>
+                        <option value="tangier">طنجة</option>
+                    </optgroup>
+                </select>
+            </div>
+            <span class="divider">أو</span>
+            <button onclick="detectLocation()" class="location-btn">
+                <i class="fas fa-location-arrow"></i>
+                تحديد موقعي
+            </button>
+        </div>
+
+        <div id="prayer-times-container" class="prayer-times">
+            <div class="loading">جاري تحميل مواقيت الصلاة...</div>
+        </div>
+    </div>
+</div>
+
+<script>
+const cities = {
+    casablanca: { lat: 33.5731, lon: -7.5898, name: 'الدار البيضاء' },
+    rabat: { lat: 34.0209, lon: -6.8416, name: 'الرباط' },
+    fes: { lat: 34.0181, lon: -5.0078, name: 'فاس' },
+    marrakech: { lat: 31.6295, lon: -7.9811, name: 'مراكش' },
+    tangier: { lat: 35.7595, lon: -5.8340, name: 'طنجة' }
+};
+
+function handleCityChange() {
+    const citySelect = document.getElementById('citySelect');
+    const selectedCity = cities[citySelect.value];
+    if (selectedCity) {
+        fetchPrayerTimes(selectedCity.lat, selectedCity.lon, selectedCity.name);
+    }
+}
+
+async function detectLocation() {
+    const container = document.getElementById('prayer-times-container');
+    container.innerHTML = '<div class="loading">جاري تحديد الموقع...</div>';
+
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            async (position) => {
+                try {
+                    const lat = position.coords.latitude;
+                    const lon = position.coords.longitude;
+                    
+                    // Get city name from coordinates
+                    const response = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`);
+                    const data = await response.json();
+                    const cityName = data.address.city || data.address.town || data.address.village || 'موقعك الحالي';
+                    
+                    fetchPrayerTimes(lat, lon, cityName);
+                } catch (error) {
+                    console.error('Error getting location:', error);
+                    container.innerHTML = '<div class="error">تعذر تحديد موقعك. يرجى اختيار مدينة من القائمة.</div>';
+                }
+            },
+            (error) => {
+                console.error('Geolocation error:', error);
+                container.innerHTML = '<div class="error">تعذر تحديد موقعك. يرجى اختيار مدينة من القائمة.</div>';
+            }
+        );
+    } else {
+        container.innerHTML = '<div class="error">متصفحك لا يدعم تحديد الموقع. يرجى اختيار مدينة من القائمة.</div>';
+    }
+}
+
+async function fetchPrayerTimes(lat, lon, cityName) {
+    try {
+        const response = await fetch(`/api/prayer-times?lat=${lat}&lon=${lon}`);
+        const data = await response.json();
+        
+        if (data.error) {
+            throw new Error(data.error);
+        }
+
+        const container = document.getElementById('prayer-times-container');
+        container.innerHTML = `
+            <div class="prayer-time">
+                <span class="prayer-name">الفجر</span>
+                <span class="prayer-time-value">${data.fajr}</span>
+            </div>
+            <div class="prayer-time">
+                <span class="prayer-name">الظهر</span>
+                <span class="prayer-time-value">${data.dhuhr}</span>
+            </div>
+            <div class="prayer-time">
+                <span class="prayer-name">العصر</span>
+                <span class="prayer-time-value">${data.asr}</span>
+            </div>
+            <div class="prayer-time">
+                <span class="prayer-name">المغرب</span>
+                <span class="prayer-time-value">${data.maghrib}</span>
+            </div>
+            <div class="prayer-time">
+                <span class="prayer-name">العشاء</span>
+                <span class="prayer-time-value">${data.isha}</span>
+            </div>
+            <div class="location-info">
+                <i class="fas fa-map-marker-alt"></i>
+                <span>${cityName}</span>
+            </div>
+        `;
+    } catch (error) {
+        console.error('Error fetching prayer times:', error);
+        document.getElementById('prayer-times-container').innerHTML = `
+            <div class="error">
+                حدث خطأ في تحميل مواقيت الصلاة
+                <button onclick="detectLocation()" class="retry-button">
+                    <i class="fas fa-redo"></i> إعادة المحاولة
+                </button>
+            </div>
+        `;
+    }
+}
+
+// Start with geolocation on page load
+document.addEventListener('DOMContentLoaded', detectLocation);
+</script>
+{% endblock %} 
