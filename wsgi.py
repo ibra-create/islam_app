@@ -1,4 +1,6 @@
-from moslimfo.islam import app
+import islam
+
+app = islam.app
 
 if __name__ == "__main__":
     app.run() 
