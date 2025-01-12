@@ -1,1 +1,1 @@
-web: gunicorn --chdir moslimfo wsgi:app 
+web: gunicorn wsgi:app 
