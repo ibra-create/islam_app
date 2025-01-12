@@ -1,1 +1,1 @@
-web: gunicorn wsgi:app 
+web: cd moslimfo && gunicorn wsgi:app 
